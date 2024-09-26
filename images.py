@@ -65,28 +65,40 @@ def process_image(image, face_location, student_info):
     bordered_image = Image.new('RGB', (1024 + border_size * 2, 1024 + border_size * 2), (255, 255, 255))
     bordered_image.paste(pil_image, (border_size, border_size))
     
-    # Draw the student's name and date on the image
-    draw = ImageDraw.Draw(bordered_image)
-    font = ImageFont.load_default()  # Use default font
+    # Draw the student's name and date on the new image below the cropped image
+    new_image_height = bordered_image.height + 90  # Slightly decrease the space for name and date
+    new_image = Image.new('RGB', (bordered_image.width, new_image_height), (255, 255, 255))  # Adjusted height
+    new_image.paste(bordered_image, (0, 0))
+    
+    draw = ImageDraw.Draw(new_image)
+    font_size = 48  # Set a larger font size
+    font = ImageFont.truetype("arialbd.ttf", font_size)  # Use a TrueType bold font with a larger size
     current_date = datetime.now().strftime('%d-%m-%Y')
     text = f"{student_info['Name']}\n{current_date}"
-    
+
+    # Calculate text bounding box for centering
+    text_bbox = draw.textbbox((0, 0), text, font=font)
+    text_width = text_bbox[2] - text_bbox[0]  # Width
+    text_height = text_bbox[3] - text_bbox[1]  # Height
+    text_x = (new_image.width - text_width) / 2
+    text_y = bordered_image.height + (40 - text_height) / 2  # Adjust the vertical position
+
     # Draw text on the image
-    draw.text((10, 10), text, fill="black", font=font)
+    draw.text((text_x, text_y), text, fill="black", font=font)
     
     # Save the image using the student's details
     output_file_name = f"{student_info['Name']}_{student_info['Admission_Number']}_{student_info['Class']}_{student_info['Section']}_{current_date}.jpg"
     output_path = os.path.join(output_dir, output_file_name)
 
     # Save the image initially to check its size
-    bordered_image.save(output_path, "JPEG", quality=85)
+    new_image.save(output_path, "JPEG", quality=85)
 
     # Initialize quality for size checking
     quality = 85
     # Check size and reduce quality if needed
     while os.path.getsize(output_path) > 40 * 1024:  # 40 KB
         quality = int(quality * 0.9)  # Reduce quality by 10%
-        bordered_image.save(output_path, "JPEG", quality=quality)
+        new_image.save(output_path, "JPEG", quality=quality)
 
     return True
 
