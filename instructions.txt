@@ -1,0 +1,76 @@
+Instructions for Running the Image Processing Script
+1. Setup
+Prerequisites
+Ensure you have Python installed on your machine. You can download it from the official Python website.
+During installation, make sure to check the box to "Add Python to PATH."
+Create a Virtual Environment (Optional)
+Creating a virtual environment is recommended for managing dependencies.
+
+Open a command prompt or terminal.
+Navigate to your project directory:
+bash
+Copy code
+cd path_to_your_project_directory
+Create a virtual environment:
+bash
+Copy code
+python -m venv venv
+Activate the virtual environment:
+On Windows:
+bash
+Copy code
+venv\Scripts\activate
+On macOS/Linux:
+bash
+Copy code
+source venv/bin/activate
+2. Dependencies
+You will need to install several packages to run the script successfully. Use the following commands:
+
+bash
+Copy code
+pip install opencv-python
+pip install opencv-python-headless  # Optional, for GUI features
+pip install pandas
+pip install numpy
+pip install pillow
+pip install mtcnn
+Microsoft Visual C++ Redistributable (Windows Only)
+If you are using Windows, ensure that you have the Microsoft Visual C++ Redistributable installed. You can download it from the official Microsoft site.
+
+3. Excel File Template
+The script requires an Excel file containing student data formatted in the following way:
+
+Excel File Structure
+File Name: students_data.xlsx (You can name it differently, but ensure to update the code accordingly)
+Sheet Name: Sheet (or update the code with the name you choose)
+Columns: Ensure the following columns are present, without leading or trailing spaces:
+Admission_Number: The unique admission number for each student (as a string).
+Name: The full name of the student.
+Class: The class or grade of the student.
+Section: The section the student belongs to.
+Example Data
+Admission_Number	Name	Class	Section
+123456	Amit	VI	A
+789012	Akash	VI	B
+Notes:
+Ensure that the admission numbers are unique.
+Save the Excel file in a location accessible to the script and update the excel_file variable in the code with the correct path.
+4. Running the Script
+Make sure your virtual environment is activated (if applicable).
+Place the images you want to process in the specified input_dir.
+Run the script using Python:
+bash
+Copy code
+python your_script_name.py
+Replace your_script_name.py with the actual name of your Python file.
+5. Output
+The processed images will be saved in the specified output_dir.
+A log file (log.txt) will be generated to track the processing status of each image.
+Any images that could not be processed will be listed in the console output.
+6. Deactivate the Virtual Environment (Optional)
+After completing your work, you can deactivate the virtual environment by running:
+
+bash
+Copy code
+deactivate
